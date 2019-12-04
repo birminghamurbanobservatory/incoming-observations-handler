@@ -41,4 +41,4 @@ incoming-observations-manager <--------->  sensor-deployment-manager
 ```
 
 
-This makes it far easier to remove/add extra microservices to processing sequence.
+This makes it far easier to remove/add extra microservices to the processing sequence.
