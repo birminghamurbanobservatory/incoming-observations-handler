@@ -41,8 +41,11 @@ async function subscribeToObservationIncomingRequests(): Promise<any> {
   
   const eventName = 'observation.incoming';
 
-  const observationIncomingRequestSchema = joi.object({}).unknown().required();
-  // We'll let the controller check the actual properties
+  const observationIncomingRequestSchema = joi.object({
+    // We'll let the controller check the actual properties
+  })
+  .unknown()
+  .required();
 
   await event.subscribe(eventName, async (message): Promise<void> => {
 

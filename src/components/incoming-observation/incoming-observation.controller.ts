@@ -19,7 +19,9 @@ export async function processIncomingObservation(observation: Observation): Prom
   // TODO: Apply some QC
 
   // Save the observation (the obs will now have an ID based upon the timeseries it was allocated to).
-  const savedObs = await event.publishExpectingResponse('observation.create.request');
+  const savedObs = await event.publishExpectingResponse('observation.create.request', {
+    new: obsWithContext
+  });
 
   // Publish the finished observation so subscribed microservices can do something with it
   await event.publish('observation.outgoing', savedObs);
