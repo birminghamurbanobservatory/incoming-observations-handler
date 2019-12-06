@@ -7,7 +7,9 @@ const schema = joi.object({
   hasResult: joi.object({
     value: joi.any().required()
   }).required(),
-  resultTime: joi.string().isoDate(),
+  resultTime: joi.string()
+    .isoDate()
+    .required(),
   hasFeatureOfInterest: joi.string(),
   observedProperty: joi.string(),
   usedProcedures: joi.array().items(joi.string())
