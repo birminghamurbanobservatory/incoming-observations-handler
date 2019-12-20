@@ -51,15 +51,16 @@ async function subscribeToObservationIncomingRequests(): Promise<any> {
 
     logger.debug(`New ${eventName} message.`, message);
 
+    let savedObs;
     try {
       const {error: err} = observationIncomingRequestSchema.validate(message);
       if (err) throw new BadRequest(`Invalid ${eventName} request: ${err.message}`);    
-      await processIncomingObservation(message);
+      savedObs = await processIncomingObservation(message);
     } catch (err) {
       logCensorAndRethrow(eventName, err);
     }
 
-    return;
+    return savedObs; // in case the publish to observation.incoming has asked for a response.
   });
 
   logger.debug(`Subscribed to ${eventName} requests`);

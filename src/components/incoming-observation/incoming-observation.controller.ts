@@ -4,7 +4,7 @@ import * as event from 'event-stream';
 import * as logger from 'node-logger';
 
 
-export async function processIncomingObservation(observation: Observation): Promise<void> {
+export async function processIncomingObservation(observation: Observation): Promise<Observation> {
 
   // TODO: If any of these phases fail I should really store the observation in a database for later processing, the database will need to keep a record of where we got up to to avoid repeating any steps.
 
@@ -30,5 +30,7 @@ export async function processIncomingObservation(observation: Observation): Prom
   // Publish the finished observation so subscribed microservices can do something with it
   await event.publish('observation.outgoing', savedObs);
   logger.debug('Observation has been published as outgoing.');
+
+  return savedObs;
 
 }
