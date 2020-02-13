@@ -5,11 +5,16 @@ import {Observation} from './observation.class';
 const schema = joi.object({
   madeBySensor: joi.string().required(),
   hasResult: joi.object({
-    value: joi.any().required()
+    value: joi.any().required(),
+    flags: joi.array().items(joi.string())
   }).required(),
   resultTime: joi.string()
     .isoDate()
     .required(),
+  phenomenonTime: joi.object({
+    hasBeginning: joi.string().isoDate(),
+    hasEnd: joi.string().isoDate()
+  }),
   hasFeatureOfInterest: joi.string(),
   observedProperty: joi.string(),
   usedProcedures: joi.array().items(joi.string())
