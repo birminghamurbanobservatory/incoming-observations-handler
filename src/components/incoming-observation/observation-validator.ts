@@ -5,6 +5,7 @@ import {validateGeometry} from '../../utils/geojson.validator';
 
 const schema = joi.object({
   madeBySensor: joi.string().required(),
+  // N.B. at this point the sensor should NOT yet have any concept of which deployment it is in or which platform it is on.
   hasResult: joi.object({
     value: joi.any().required(),
     flags: joi.array().items(joi.string())
