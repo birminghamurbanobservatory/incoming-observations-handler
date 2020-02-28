@@ -17,9 +17,9 @@ const schema = joi.object({
     hasBeginning: joi.string().isoDate(),
     hasEnd: joi.string().isoDate()
   }),
-  hasFeatureOfInterest: joi.string(),
   observedProperty: joi.string(),
-  usedProcedures: joi.array().items(joi.string()),
+  usedProcedure: joi.array().items(joi.string()),
+  // N.B. at this stage the observation shouldn't have a discipline or hasFeatureOfInterest applied, this is the responsibility of the sensor-deployment-manager.
   location: joi.object({
     id: joi.string().guid(), // this is the client_id, a uuid,
     validAt: joi.string().isoDate(),

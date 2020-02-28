@@ -3,9 +3,8 @@ export class Observation {
   public madeBySensor?: string;
   public hasResult?: Result;
   public resultTime?: string | Date;
-  public hasFeatureOfInterest?: string;
   public observedProperty?: string;
-  public usedProcedures?: string[];
+  public usedProcedure?: string[];
 }
 
 class Result {
