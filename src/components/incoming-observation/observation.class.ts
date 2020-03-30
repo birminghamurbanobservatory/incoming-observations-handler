@@ -4,7 +4,8 @@ export class Observation {
   public hasResult?: Result;
   public resultTime?: string | Date;
   public observedProperty?: string;
-  public usedProcedure?: string[];
+  public unit?: string;
+  public usedProcedures?: string[];
 }
 
 class Result {

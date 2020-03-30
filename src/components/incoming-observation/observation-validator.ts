@@ -17,9 +17,10 @@ const schema = joi.object({
     hasBeginning: joi.string().isoDate(),
     hasEnd: joi.string().isoDate()
   }),
-  observedProperty: joi.string(),
-  usedProcedure: joi.array().items(joi.string()),
-  // N.B. at this stage the observation shouldn't have a discipline or hasFeatureOfInterest applied, this is the responsibility of the sensor-deployment-manager.
+  observedProperty: joi.string(), // TODO: Add a PascalCase regex checker here?
+  unit: joi.string(),
+  usedProcedures: joi.array().items(joi.string()),
+  // N.B. at this stage the observation shouldn't have disciplines or hasFeatureOfInterest applied, this is the responsibility of the sensor-deployment-manager.
   location: joi.object({
     id: joi.string().guid(), // this is the client_id, a uuid,
     validAt: joi.string().isoDate(),
