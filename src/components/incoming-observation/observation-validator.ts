@@ -8,6 +8,7 @@ const schema = joi.object({
   // N.B. at this point the sensor should NOT yet have any concept of which deployment it is in or which platform it is on.
   hasResult: joi.object({
     value: joi.any().required(),
+    unit: joi.string(),
     flags: joi.array().items(joi.string())
   }).required(),
   resultTime: joi.string()
@@ -18,7 +19,6 @@ const schema = joi.object({
     hasEnd: joi.string().isoDate()
   }),
   observedProperty: joi.string(), // TODO: Add a PascalCase regex checker here?
-  unit: joi.string(),
   usedProcedures: joi.array().items(joi.string()),
   // N.B. at this stage the observation shouldn't have disciplines or hasFeatureOfInterest applied, this is the responsibility of the sensor-deployment-manager.
   location: joi.object({
