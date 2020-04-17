@@ -3,6 +3,7 @@ export class Observation {
   public madeBySensor?: string;
   public hasResult?: Result;
   public resultTime?: string | Date;
+  public phenomenonTime?: PhenomenonTime;
   public observedProperty?: string;
   public usedProcedures?: string[];
 }
@@ -10,4 +11,9 @@ export class Observation {
 class Result {
   value: any;
   unit?: string;
+}
+
+class PhenomenonTime {
+  hasBeginning: string;
+  hasEnd: string;
 }
