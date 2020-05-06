@@ -19,6 +19,7 @@ const schema = joi.object({
     hasEnd: joi.string().isoDate()
   }),
   observedProperty: joi.string(), // TODO: Add a PascalCase regex checker here?
+  aggregation: joi.string(),
   usedProcedures: joi.array().items(joi.string()),
   // N.B. at this stage the observation shouldn't have disciplines or hasFeatureOfInterest applied, this is the responsibility of the sensor-deployment-manager.
   location: joi.object({

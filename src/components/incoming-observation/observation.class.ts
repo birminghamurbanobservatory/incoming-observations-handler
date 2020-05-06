@@ -5,6 +5,7 @@ export class Observation {
   public resultTime?: string | Date;
   public phenomenonTime?: PhenomenonTime;
   public observedProperty?: string;
+  public aggregation?: string;
   public usedProcedures?: string[];
 }
 
