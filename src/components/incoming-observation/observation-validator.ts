@@ -25,6 +25,7 @@ const schema = joi.object({
   location: joi.object({
     id: joi.string().guid(), // this is the client_id, a uuid,
     validAt: joi.string().isoDate(),
+    height: joi.number(), // height above ground in metres
     geometry: joi.object({
       type: joi.string().required(),
       coordinates: joi.array().required()
