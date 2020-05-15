@@ -1,6 +1,6 @@
 {
   "name": "incoming-observations-handler",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Handles incoming observations, giving them context, making sure they are quality controlled, and making sure they are saved.",
   "main": "index.js",
   "scripts": {
