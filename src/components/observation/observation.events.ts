@@ -2,7 +2,7 @@ import {logCensorAndRethrow} from '../../events/handle-event-handler-error';
 import * as logger from 'node-logger';
 import * as Promise from 'bluebird';
 import {BadRequest} from '../../errors/BadRequest';
-import {processIncomingObservation} from './incoming-observation.controller';
+import {processIncomingObservation, processObservationWithContext} from './observation.controller';
 import * as event from 'event-stream';
 import * as joi from '@hapi/joi';
 
@@ -11,7 +11,8 @@ import * as joi from '@hapi/joi';
 export async function subscribeToIncomingObservationEvents(): Promise<void> {
 
   const subscriptionFunctions = [
-    subscribeToObservationIncomingRequests,
+    subscribeToObservationIncomingEvents,
+    subscribeToObservationWithContextEvents
   ];
 
   // I don't want later subscriptions to be prevented, just because an earlier attempt failed, as I want my event-stream module to have all the event names and handler functions added to its list of subscriptions so it can add them again upon a reconnect.
@@ -37,11 +38,11 @@ export async function subscribeToIncomingObservationEvents(): Promise<void> {
 //-------------------------------------------------
 // New incoming observation
 //-------------------------------------------------
-async function subscribeToObservationIncomingRequests(): Promise<any> {
+async function subscribeToObservationIncomingEvents(): Promise<any> {
   
   const eventName = 'observation.incoming';
 
-  const observationIncomingRequestSchema = joi.object({
+  const observationIncomingMessageSchema = joi.object({
     // We'll let the controller check the actual properties
   })
   .unknown()
@@ -51,16 +52,48 @@ async function subscribeToObservationIncomingRequests(): Promise<any> {
 
     logger.debug(`New ${eventName} message.`, message);
 
-    let savedObs;
     try {
-      const {error: err} = observationIncomingRequestSchema.validate(message);
+      const {error: err} = observationIncomingMessageSchema.validate(message);
       if (err) throw new BadRequest(`Invalid ${eventName} request: ${err.message}`);    
-      savedObs = await processIncomingObservation(message);
+      await processIncomingObservation(message);
     } catch (err) {
       logCensorAndRethrow(eventName, err);
     }
 
-    return savedObs; // in case the publish to observation.incoming has asked for a response.
+    return;
+  });
+
+  logger.debug(`Subscribed to ${eventName} requests`);
+  return;
+}
+
+
+//-------------------------------------------------
+// Observation with context
+//-------------------------------------------------
+async function subscribeToObservationWithContextEvents(): Promise<any> {
+  
+  const eventName = 'observation.with-content';
+
+  const observationWithContextMessageSchema = joi.object({
+    // We'll let the controller check the actual properties
+  })
+  .unknown()
+  .required();
+
+  await event.subscribe(eventName, async (message): Promise<void> => {
+
+    logger.debug(`New ${eventName} message.`, message);
+
+    try {
+      const {error: err} = observationWithContextMessageSchema.validate(message);
+      if (err) throw new BadRequest(`Invalid ${eventName} request: ${err.message}`);    
+      await processObservationWithContext(message);
+    } catch (err) {
+      logCensorAndRethrow(eventName, err);
+    }
+
+    return;
   });
 
   logger.debug(`Subscribed to ${eventName} requests`);

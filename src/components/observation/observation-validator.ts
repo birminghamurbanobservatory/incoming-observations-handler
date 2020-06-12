@@ -1,9 +1,13 @@
 import * as joi from '@hapi/joi';
 import {InvalidIncomingObservation} from './errors/InvalidIncomingObservation';
-import {Observation} from './observation.class';
+import {ObservationIncoming} from './observation-incoming';
 import {validateGeometry} from '../../utils/geojson.validator';
 
-const schema = joi.object({
+
+//-------------------------------------------------
+// Incoming observation
+//-------------------------------------------------
+const incomingObservationSchema = joi.object({
   madeBySensor: joi.string().required(),
   // N.B. at this point the sensor should NOT yet have any concept of which deployment it is in or which platform it is on.
   hasResult: joi.object({
@@ -39,9 +43,9 @@ const schema = joi.object({
 });
 
 
-export function validateIncomingObservation(observation): Observation {
+export function validateIncomingObservation(observation): ObservationIncoming {
 
-  const {error: err, value: validatedObservation} = schema.validate(observation);
+  const {error: err, value: validatedObservation} = incomingObservationSchema.validate(observation);
 
   if (err) {
     throw new InvalidIncomingObservation(err.message);
@@ -50,3 +54,4 @@ export function validateIncomingObservation(observation): Observation {
   return validatedObservation;
 
 }
+
